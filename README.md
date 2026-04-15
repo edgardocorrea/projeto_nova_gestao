@@ -1,26 +1,49 @@
+# Arquitetura de Dados — Sistema de Cadastro de Fornecedores
 
-```markdown
-# Arquitetura de Dados: Sistema de Cadastro de Fornecedores
-## Nova Gestão Ltda
-
----
-
-## 📋 Visão Geral do Projeto
-
-**Objetivo:** Automatizar o cadastro de fornecedores com validação de dados em tempo real e integração com CRM
-
-**Tecnologias Utilizadas:**
-- Zoho Creator 
-- Deluge Scripting
-- BrasilAPI (Integração de Dados Públicos)
-- Zoho Bigin (CRM)
-- ZML (Zoho Markup Language)
+## Nova Gestão Ltda (Projeto com Zoho)
 
 ---
 
-## 🏗️ 1. Arquitetura do Formulário
+#  Visão Geral do Projeto
 
-### Campos Estruturados e Validação
+Este projeto foi desenvolvido para **automatizar o processo de cadastro de fornecedores**, reduzindo erros de digitação e melhorando a qualidade das informações registradas no sistema.
+
+A solução utiliza **Zoho Creator** como plataforma principal, combinada com **Deluge Scripting** para automação de lógica de negócio e integração com APIs externas.
+
+Uma das principais funcionalidades é a consulta automática de dados empresariais através do **CNPJ**, utilizando a **BrasilAPI**. Ao inserir o CNPJ, o sistema busca automaticamente informações públicas da empresa e preenche diversos campos do formulário.
+
+Além disso, os dados cadastrados são integrados automaticamente com o **Zoho Bigin (CRM)**, permitindo que a equipe comercial tenha acesso imediato aos fornecedores cadastrados.
+
+---
+
+#  Objetivo do Sistema
+
+Automatizar o cadastro de fornecedores garantindo:
+
+* validação de dados em tempo real
+* redução de erros manuais
+* integração automática com CRM
+* geração de indicadores para tomada de decisão
+
+---
+
+# Tecnologias Utilizadas
+
+* Zoho Creator
+* Deluge Scripting
+* BrasilAPI (Integração de Dados Públicos)
+* Zoho Bigin (CRM)
+* ZML (Zoho Markup Language)
+
+---
+
+# 1. Arquitetura do Formulário
+
+O sistema começa com um formulário estruturado para garantir que os dados sejam preenchidos corretamente.
+
+Os campos incluem validações automáticas e lógica de preenchimento baseada na entrada do usuário.
+
+## Campos Estruturados e Validação
 
 ```mermaid
 graph TD
@@ -36,7 +59,13 @@ graph TD
     D --> D2[Validação em Tempo Real]
 ```
 
-### Implementação Técnica
+Essa estrutura garante que o formulário seja **padronizado, confiável e fácil de utilizar**.
+
+---
+
+## Implementação Técnica
+
+A lógica abaixo demonstra um exemplo de script executado quando o usuário insere um CNPJ no formulário.
 
 ```javascript
 // Exemplo de Lógica On-User-Input em Deluge
@@ -52,11 +81,15 @@ if(input.CNPJ.length == 14) {
 }
 ```
 
+Esse mecanismo reduz o preenchimento manual e aumenta a consistência das informações cadastradas.
+
 ---
 
-## 🔗 2. Integração com APIs Externas
+#  2. Integração com APIs Externas
 
-### Arquitetura de Comunicação
+Para enriquecer os dados do cadastro, o sistema realiza consultas automáticas à **BrasilAPI**, que fornece dados públicos de empresas brasileiras.
+
+## Arquitetura de Comunicação
 
 ```mermaid
 sequenceDiagram
@@ -72,7 +105,11 @@ sequenceDiagram
     Zoho Creator->>User: Preenche Formulário
 ```
 
-### Script de Integração (Deluge)
+Esse fluxo garante que os dados inseridos no sistema sejam **validados e enriquecidos automaticamente**.
+
+---
+
+## Script de Integração (Deluge)
 
 ```deluge
 // Função principal de integração
@@ -118,11 +155,15 @@ function integrateWithBrasilAPI() {
 }
 ```
 
+Essa integração garante que o sistema mantenha **dados atualizados e confiáveis**.
+
 ---
 
-## 📊 3. Relatórios e Inteligência de Dados
+#  3. Relatórios e Inteligência de Dados
 
-### Dashboard Estruturado
+Após o armazenamento dos dados, o sistema disponibiliza dashboards para análise e acompanhamento dos fornecedores cadastrados.
+
+## Dashboard Estruturado
 
 ```mermaid
 graph LR
@@ -139,7 +180,11 @@ graph LR
     C --> C3[Quick Filters]
 ```
 
-### Componentes do Dashboard
+O objetivo é transformar dados brutos em **informações úteis para tomada de decisão**.
+
+---
+
+## Componentes do Dashboard
 
 ```html
 <!-- Exemplo de ZML para Dashboard -->
@@ -166,22 +211,28 @@ graph LR
 </zoho-page>
 ```
 
+Esses componentes permitem que gestores visualizem rapidamente informações importantes sobre os fornecedores.
+
 ---
 
-## 📝 4. Log de Consultas e Auditoria
+#  4. Log de Consultas e Auditoria
 
-### Estrutura da Tabela de Log
+Para garantir rastreabilidade e monitoramento das integrações, o sistema registra todas as consultas realizadas à API.
 
-| Campo | Tipo | Descrição |
-|-------|------|-----------|
-| id | AutoNumber | ID único |
-| cnpj | Text | CNPJ consultado |
-| data_hora | DateTime | Timestamp da consulta |
-| status | Choice | SUCESSO/FALHA |
-| dados_retorno | LongText | JSON completo da resposta |
-| usuario | Lookup | Usuário que realizou |
+## Estrutura da Tabela de Log
 
-### Query de Auditoria
+| Campo         | Tipo       | Descrição                 |
+| ------------- | ---------- | ------------------------- |
+| id            | AutoNumber | ID único                  |
+| cnpj          | Text       | CNPJ consultado           |
+| data_hora     | DateTime   | Timestamp da consulta     |
+| status        | Choice     | SUCESSO/FALHA             |
+| dados_retorno | LongText   | JSON completo da resposta |
+| usuario       | Lookup     | Usuário que realizou      |
+
+---
+
+## Query de Auditoria
 
 ```sql
 -- Consulta para monitoramento de consumo da API
@@ -196,11 +247,15 @@ GROUP BY DATEPART(day, data_hora)
 ORDER BY dia DESC;
 ```
 
+Esse tipo de monitoramento permite acompanhar o **uso da API e identificar possíveis falhas de integração**.
+
 ---
 
-## 🔄 5. Integração com Zoho Bigin
+#  5. Integração com Zoho Bigin
 
-### Fluxo de Trabalho Automatizado
+Após o cadastro do fornecedor, o sistema executa uma integração automática com o CRM **Zoho Bigin**, garantindo que as informações estejam disponíveis para a equipe comercial.
+
+## Fluxo de Trabalho Automatizado
 
 ```mermaid
 flowchart TB
@@ -214,7 +269,9 @@ flowchart TB
     G --> H[Mensagem de Erro]
 ```
 
-### Script de Integração
+---
+
+## Script de Integração
 
 ```deluge
 // Integração com Zoho Bigin
@@ -246,40 +303,42 @@ function createBiginRecord() {
 }
 ```
 
----
-
-## 📈 Resultados e Métricas
-
-### Indicadores de Performance
-
-- **Redução de Erros:** 100% na inserção de dados de endereço
-- **Tempo de Cadastro:** Redução de 3-5 minutos por fornecedor
-- **Qualidade dos Dados:** Aumento de 95% na consistência dos registros
-- **Integração CRM:** 100% dos fornecedores cadastrados sincronizados com Bigin
-
-### Próximos Passos
-
-1. **Expansão de APIs:** Integração com mais fontes de dados
-2. **Machine Learning:** Análise preditiva de fornecedores
-3. **Mobile App:** Versão mobile do sistema
-4. **Automação Avançada:** Workflows complexos entre sistemas
+Essa etapa garante que os dados cadastrados no sistema estejam sempre sincronizados com o CRM.
 
 ---
 
-## 🎯 Conclusão
+#  Resultados e Métricas
 
-**Arquitetura de Dados Implementada:**
-- ✅ Formulário com validação em tempo real
-- ✅ Integração robusta com APIs externas
-- ✅ Dashboard com inteligência de negócio
-- ✅ Sistema de auditoria completo
-- ✅ Fluxo de CRM automatizado
+Após a implementação do sistema, foram observados os seguintes benefícios operacionais:
 
-**Valor Gerado:**
-- Eficiência operacional
-- Qualidade dos dados
-- Tomada de decisão baseada em dados
-- Integração de sistemas
+* **Redução de erros:** eliminação de erros na digitação de endereço
+* **Agilidade:** redução de 3 a 5 minutos no cadastro de cada fornecedor
+* **Qualidade dos dados:** aumento de aproximadamente 95% na consistência das informações
+* **Integração CRM:** sincronização automática dos fornecedores cadastrados
 
-```
-```
+---
+
+#  Próximos Passos
+
+Possíveis evoluções para o sistema incluem:
+
+1. Integração com novas APIs de dados empresariais
+2. Aplicação de modelos de Machine Learning para análise de fornecedores
+3. Desenvolvimento de uma versão mobile do sistema
+4. Automação avançada entre múltiplos sistemas corporativos
+
+---
+
+#  Conclusão
+
+A arquitetura implementada neste projeto demonstra como a automação de processos e a integração entre sistemas podem melhorar significativamente a qualidade dos dados e a eficiência operacional.
+
+A solução combina:
+
+* validação de dados em tempo real
+* integração com APIs externas
+* dashboards analíticos
+* sistema completo de auditoria
+* sincronização automática com CRM
+
+O sistema oferece uma base sólida para **gestão eficiente de fornecedores e tomada de decisão baseada em dados**.
